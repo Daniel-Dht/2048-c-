@@ -18,12 +18,17 @@ private :
     bool cellShiftedLeft = false;
     bool cellShiftedRight = false;
 
-public:
-    Grid();
     int twoOrFour();
-    void display();
-    void initRandomSpot() ;
     void initValues();
+    void initRandomSpot() ;
+
+public:
+
+    Grid();
+    Grid( const Grid &grid );
+
+    void display();
+    void checkDeath();
 
     void fusionRight();
     void fusionLeft();

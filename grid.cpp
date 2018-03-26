@@ -10,6 +10,16 @@ Grid::Grid()
     this->initRandomSpot();
 }
 
+Grid::Grid(const Grid &grid){ // constructeur de copie
+    for(int i=0; i< nbCell ; i++)
+    {
+        for(int j=0; j< nbCell; j++)
+        {
+           cellTab[i][j] = grid.cellTab[i][j] ;
+        }
+    }
+}
+
 void Grid::display() //affiche sous forme matricielle
 {
     for(int i=0; i< nbCell; i++)
@@ -87,7 +97,6 @@ void Grid::fusionRight() {
       if(cellTab[i][j+1] == cellTab[i][j] && cellTab[i][j] !=0 ) {   // tout simple
 
         if(!cellShiftedRight) cellShiftedRight = true ;
-//       else gameOverRight = false ;
 
        cellTab[i][j+1]  = 2*cellTab[i][j];
        cellTab[i][j] = 0 ;
@@ -97,10 +106,8 @@ void Grid::fusionRight() {
   this->shiftRight();
   if(cellShiftedRight ) {
       initRandomSpot();
-      cellShiftedRight = false ;
   }
-  //if (countRight !=0 && !testDeath ) initRandomSpot(grid);   // si ni shift ni fusion (et si test le gameOver), on ne fait pas appraraitre de spot
-
+  //this->checkDeath();
 }
 
 void Grid::shiftLeft() {
@@ -131,7 +138,6 @@ void Grid::fusionLeft() {
       if(cellTab[i][j-1] == cellTab[i][j] && cellTab[i][j] !=0  ) {
 
         if(!cellShiftedLeft) cellShiftedLeft = true ;
-//       gameOverLeft = false ;
 
        cellTab[i][j-1]  = 2*cellTab[i][j];
        cellTab[i][j] = 0 ;
@@ -142,9 +148,8 @@ void Grid::fusionLeft() {
   shiftLeft();
   if( cellShiftedLeft ){
       initRandomSpot();
-      cellShiftedLeft = false;
   }
-  //if (countLeft !=0 && !testDeath ) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
+  //this->checkDeath();
 }
 
 void Grid::shiftUp() {
@@ -175,7 +180,6 @@ void Grid::fusionUp() {
       if(cellTab[i-1][j] == cellTab[i][j] && cellTab[i][j] !=0  ) {
 
        if( !cellShiftedUp) cellShiftedUp = true;
-       //gameOverUp = false ;
 
        cellTab[i-1][j]  = 2*cellTab[i][j];
        cellTab[i][j] = 0 ;
@@ -186,9 +190,8 @@ void Grid::fusionUp() {
   shiftUp();
   if(cellShiftedUp) {
       initRandomSpot();
-      cellShiftedUp = false;
   }
-  //if (countUp !=0 && !testDeath) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
+  //this->checkDeath();
 }
 
 void Grid::shiftDown() {
@@ -220,7 +223,6 @@ void Grid::fusionDown() {
       if(cellTab[i+1][j] == cellTab[i][j] && cellTab[i][j] !=0 ) {  // && grid[i][j] !=0 pour éviter de rentrer dans le if, bouger un 0 ne sert à rien et augmente le count
 
        if(!cellShiftedDown) cellShiftedDown = true;
-       //gameOverDown = false ;
 
        cellTab[i+1][j]  = 2*cellTab[i][j];
        cellTab[i][j] = 0 ;
@@ -231,7 +233,39 @@ void Grid::fusionDown() {
   shiftDown();
   if(cellShiftedDown){
     initRandomSpot();
-    cellShiftedDown = true;
   }
-  //if (countDown !=0 && !testDeath) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
+  //this->checkDeath();
 }
+
+void Grid::checkDeath() {
+
+    //Grid *gridTest(0); // pointeur initialisé sur rien
+    //gridTest = new Grid(*this) ;
+    //Grid gridTest = Grid(*this) ; // on copie la grille
+
+    Grid gridTest = Grid() ;
+
+    gridTest.fusionDown(); // on test chaque possibilité dans la copie
+    gridTest.fusionLeft();
+    gridTest.fusionRight();
+    gridTest.fusionUp();
+
+    if(!gridTest.cellShiftedRight && !gridTest.cellShiftedLeft && !gridTest.cellShiftedUp && !gridTest.cellShiftedDown) {
+        cout <<"******"<<" Game Over" << "*****"<< endl;
+    } else {
+       cellShiftedRight = false;
+       cellShiftedLeft = false;
+       cellShiftedUp = false;
+       cellShiftedDown = false;
+    }
+
+    //delete gridTest ;
+}
+
+
+
+
+
+
+
+

@@ -27,6 +27,18 @@ int main(int argc, char *argv[])
     grid1.fusionUp();
     grid1.display();
 
+    grid1.checkDeath();
+
+//    Grid *gridTest(0);
+//    gridTest = new Grid(grid1) ;
+//    gridTest->display();
+//    delete gridTest ;
+
+
+//    Grid grid2 = Grid(grid1);
+//    cout <<"******  Copie   *****"<< endl;
+//    grid2.display();
+
 //    int number = 2;
 //    int proba ;
 
