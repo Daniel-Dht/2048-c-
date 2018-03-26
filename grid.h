@@ -16,6 +16,19 @@ private :
 public:
     Grid();
     void display();
+    int twoOrFour();
+    void initRandomSpot() ;
+    void initValues();
+
+    void fusionRight();
+    void fusionLeft();
+    void fusionUp();
+    void fusionDown();
+
+    void shiftRight();
+    void shiftLeft();
+    void shiftUp();
+    void shiftDown();
 };
 
 #endif // GRID_H
