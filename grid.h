@@ -30,10 +30,10 @@ public:
     void display();
     void checkDeath();
 
-    void fusionRight();
-    void fusionLeft();
-    void fusionUp();
-    void fusionDown();
+    void fusionRight(bool testDeath);
+    void fusionLeft( bool testDeath);
+    void fusionUp(   bool testDeath);
+    void fusionDown( bool testDeath);
 
     void shiftRight();
     void shiftLeft();

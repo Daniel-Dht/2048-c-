@@ -71,8 +71,7 @@ void Grid::shiftRight() {
          if( cellTab[i][j] != 0) { // si on est sur un 0 ça ne sert à rien de le décaler vers les autres 0...
            while( j!=nbCell-1 && cellTab[i][j+1] == 0  ) { // la condition j!=n-1 doit etre placée avant la suivante care dans ce cas la grid[i][j+1] n'est pas définie (grid[i][n])
 
-               if(!cellShiftedRight) cellShiftedRight = true ;
-//             gameOverRight = false ;
+               if(!cellShiftedRight) cellShiftedRight = true ; // permet de déterminer si GameOver il y a
 
              cellTab[i][j+1] = cellTab[i][j] ;   // on fait avancer les blocs vers la droite
              cellTab[i][j] = 0;
@@ -84,10 +83,10 @@ void Grid::shiftRight() {
     }
 }
 
-void Grid::fusionRight() {
+void Grid::fusionRight(bool testDeath) {
 // Effectue un shift, fusionne les couples les plus à droites 2 par 2, et refait un shift.
 // On rajoute un 2 ou un 4 si on a pas été bloqué,  cad si fusion ou shift il y a eu.
-
+// Si testDeath est vrai, on check si GameOver
   this->shiftRight() ;
 
   for (int i=0; i<nbCell; i++) {
@@ -96,7 +95,7 @@ void Grid::fusionRight() {
       int j = h;
       if(cellTab[i][j+1] == cellTab[i][j] && cellTab[i][j] !=0 ) {   // tout simple
 
-        if(!cellShiftedRight) cellShiftedRight = true ;
+        if(!cellShiftedRight) cellShiftedRight = true ; // permet de déterminer si GameOver il y a
 
        cellTab[i][j+1]  = 2*cellTab[i][j];
        cellTab[i][j] = 0 ;
@@ -107,7 +106,7 @@ void Grid::fusionRight() {
   if(cellShiftedRight ) {
       initRandomSpot();
   }
-  //this->checkDeath();
+  if(testDeath) this->checkDeath();
 }
 
 void Grid::shiftLeft() {
@@ -118,7 +117,6 @@ void Grid::shiftLeft() {
          if( cellTab[i][j] != 0) {
            while( j!=0 && cellTab[i][j-1] ==0  ) {
             if(!cellShiftedLeft) cellShiftedLeft = true ;
-//             gameOverLeft = false ;
 
              cellTab[i][j-1] = cellTab[i][j] ;
              cellTab[i][j] = 0;
@@ -129,7 +127,7 @@ void Grid::shiftLeft() {
     }
 }
 
-void Grid::fusionLeft() {
+void Grid::fusionLeft(bool testDeath) {
   shiftLeft();
   for (int i=0; i<nbCell; i++) {
     for(int h = 1 ; h <= nbCell-1 ; h++) {
@@ -149,7 +147,7 @@ void Grid::fusionLeft() {
   if( cellShiftedLeft ){
       initRandomSpot();
   }
-  //this->checkDeath();
+  if(testDeath) this->checkDeath();
 }
 
 void Grid::shiftUp() {
@@ -160,7 +158,6 @@ void Grid::shiftUp() {
          if( cellTab[i][j] != 0) {
            while( i!=0 && cellTab[i-1][j] ==0  ) {
              if( !cellShiftedUp) cellShiftedUp = true;
-             //gameOverUp = false ;
 
              cellTab[i-1][j] = cellTab[i][j] ;
              cellTab[i][j] = 0;
@@ -171,7 +168,7 @@ void Grid::shiftUp() {
     }
 }
 
-void Grid::fusionUp() {
+void Grid::fusionUp(bool testDeath) {
   shiftUp();
   for (int j=0; j<nbCell; j++) {
     for(int h = 1 ; h <= nbCell-1 ; h++) {
@@ -191,7 +188,7 @@ void Grid::fusionUp() {
   if(cellShiftedUp) {
       initRandomSpot();
   }
-  //this->checkDeath();
+  if(testDeath) this->checkDeath();
 }
 
 void Grid::shiftDown() {
@@ -203,7 +200,6 @@ void Grid::shiftDown() {
            while( i!=nbCell-1 && cellTab[i+1][j] ==0  ) {
 
              if(!cellShiftedDown) cellShiftedDown = true;
-             //gameOverDown = false ;
 
              cellTab[i+1][j] = cellTab[i][j] ;
              cellTab[i][j] = 0;
@@ -214,7 +210,7 @@ void Grid::shiftDown() {
     }
 }
 
-void Grid::fusionDown() {
+void Grid::fusionDown(bool testDeath) {
   shiftDown();
   for (int j=0; j<nbCell; j++) {
     for(int h = nbCell-2 ; h >= 0 ; h--) {
@@ -234,21 +230,17 @@ void Grid::fusionDown() {
   if(cellShiftedDown){
     initRandomSpot();
   }
-  //this->checkDeath();
+  if(testDeath) this->checkDeath();
 }
 
 void Grid::checkDeath() {
 
-    //Grid *gridTest(0); // pointeur initialisé sur rien
-    //gridTest = new Grid(*this) ;
-    //Grid gridTest = Grid(*this) ; // on copie la grille
+    Grid gridTest = Grid(*this) ; // on copie la grille
 
-    Grid gridTest = Grid() ;
-
-    gridTest.fusionDown(); // on test chaque possibilité dans la copie
-    gridTest.fusionLeft();
-    gridTest.fusionRight();
-    gridTest.fusionUp();
+    gridTest.fusionDown(false); // on test chaque possibilité dans la copie
+    gridTest.fusionLeft(false);
+    gridTest.fusionRight(false);
+    gridTest.fusionUp(false);
 
     if(!gridTest.cellShiftedRight && !gridTest.cellShiftedLeft && !gridTest.cellShiftedUp && !gridTest.cellShiftedDown) {
         cout <<"******"<<" Game Over" << "*****"<< endl;
@@ -258,8 +250,6 @@ void Grid::checkDeath() {
        cellShiftedUp = false;
        cellShiftedDown = false;
     }
-
-    //delete gridTest ;
 }
 
 
