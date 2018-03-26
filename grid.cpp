@@ -60,7 +60,8 @@ void Grid::shiftRight() {
          int j = h ;
          if( cellTab[i][j] != 0) { // si on est sur un 0 ça ne sert à rien de le décaler vers les autres 0...
            while( j!=nbCell-1 && cellTab[i][j+1] == 0  ) { // la condition j!=n-1 doit etre placée avant la suivante care dans ce cas la grid[i][j+1] n'est pas définie (grid[i][n])
-//             countRight +=1 ; //print(countRight,"\n");
+
+               if(!cellShiftedRight) cellShiftedRight = true ;
 //             gameOverRight = false ;
 
              cellTab[i][j+1] = cellTab[i][j] ;   // on fait avancer les blocs vers la droite
@@ -85,7 +86,7 @@ void Grid::fusionRight() {
       int j = h;
       if(cellTab[i][j+1] == cellTab[i][j] && cellTab[i][j] !=0 ) {   // tout simple
 
-//       if(!testDeath) countRight +=1 ;  // on compte le nombre de fusion
+        if(!cellShiftedRight) cellShiftedRight = true ;
 //       else gameOverRight = false ;
 
        cellTab[i][j+1]  = 2*cellTab[i][j];
@@ -94,7 +95,143 @@ void Grid::fusionRight() {
     }
   }
   this->shiftRight();
-
+  if(cellShiftedRight ) {
+      initRandomSpot();
+      cellShiftedRight = false ;
+  }
   //if (countRight !=0 && !testDeath ) initRandomSpot(grid);   // si ni shift ni fusion (et si test le gameOver), on ne fait pas appraraitre de spot
 
+}
+
+void Grid::shiftLeft() {
+
+    for (int i=0; i<nbCell; i++) {
+       for(int h = 1 ; h <= nbCell-1 ; h++) {
+         int j = h ;
+         if( cellTab[i][j] != 0) {
+           while( j!=0 && cellTab[i][j-1] ==0  ) {
+            if(!cellShiftedLeft) cellShiftedLeft = true ;
+//             gameOverLeft = false ;
+
+             cellTab[i][j-1] = cellTab[i][j] ;
+             cellTab[i][j] = 0;
+             j -- ;
+           }
+         }
+       }
+    }
+}
+
+void Grid::fusionLeft() {
+  shiftLeft();
+  for (int i=0; i<nbCell; i++) {
+    for(int h = 1 ; h <= nbCell-1 ; h++) {
+
+      int j = h;
+      if(cellTab[i][j-1] == cellTab[i][j] && cellTab[i][j] !=0  ) {
+
+        if(!cellShiftedLeft) cellShiftedLeft = true ;
+//       gameOverLeft = false ;
+
+       cellTab[i][j-1]  = 2*cellTab[i][j];
+       cellTab[i][j] = 0 ;
+      }
+    }
+  }
+
+  shiftLeft();
+  if( cellShiftedLeft ){
+      initRandomSpot();
+      cellShiftedLeft = false;
+  }
+  //if (countLeft !=0 && !testDeath ) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
+}
+
+void Grid::shiftUp() {
+
+    for (int j=0; j<nbCell; j++) {
+       for(int h = 1 ; h <= nbCell-1 ; h++) {
+         int i = h ;
+         if( cellTab[i][j] != 0) {
+           while( i!=0 && cellTab[i-1][j] ==0  ) {
+             if( !cellShiftedUp) cellShiftedUp = true;
+             //gameOverUp = false ;
+
+             cellTab[i-1][j] = cellTab[i][j] ;
+             cellTab[i][j] = 0;
+             i -- ;
+           }
+         }
+       }
+    }
+}
+
+void Grid::fusionUp() {
+  shiftUp();
+  for (int j=0; j<nbCell; j++) {
+    for(int h = 1 ; h <= nbCell-1 ; h++) {
+
+      int i = h;
+      if(cellTab[i-1][j] == cellTab[i][j] && cellTab[i][j] !=0  ) {
+
+       if( !cellShiftedUp) cellShiftedUp = true;
+       //gameOverUp = false ;
+
+       cellTab[i-1][j]  = 2*cellTab[i][j];
+       cellTab[i][j] = 0 ;
+      }
+    }
+  }
+
+  shiftUp();
+  if(cellShiftedUp) {
+      initRandomSpot();
+      cellShiftedUp = false;
+  }
+  //if (countUp !=0 && !testDeath) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
+}
+
+void Grid::shiftDown() {
+
+    for (int j=0; j<nbCell; j++) {
+       for(int h = nbCell-2 ; h >= 0 ; h--) {
+         int i = h ;
+         if( cellTab[i][j] != 0) {
+           while( i!=nbCell-1 && cellTab[i+1][j] ==0  ) {
+
+             if(!cellShiftedDown) cellShiftedDown = true;
+             //gameOverDown = false ;
+
+             cellTab[i+1][j] = cellTab[i][j] ;
+             cellTab[i][j] = 0;
+             i ++ ;
+           }
+         }
+       }
+    }
+}
+
+void Grid::fusionDown() {
+  shiftDown();
+  for (int j=0; j<nbCell; j++) {
+    for(int h = nbCell-2 ; h >= 0 ; h--) {
+
+      int i = h;
+      if(cellTab[i+1][j] == cellTab[i][j] && cellTab[i][j] !=0 ) {  // && grid[i][j] !=0 pour éviter de rentrer dans le if, bouger un 0 ne sert à rien et augmente le count
+
+       if(!cellShiftedDown) cellShiftedDown = true;
+       //gameOverDown = false ;
+
+       cellTab[i+1][j]  = 2*cellTab[i][j];
+       cellTab[i][j] = 0 ;
+      }
+    }
+  }
+
+  shiftDown();
+  if(cellShiftedDown){
+    initRandomSpot();
+    cellShiftedDown = true;
+  }
+  //if (countDown !=0 && !testDeath) initRandomSpot(grid); // si 0 fusion, on ne fait pas appraraitre de spot
 }

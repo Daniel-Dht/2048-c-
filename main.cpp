@@ -11,12 +11,21 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     Grid grid1 = Grid() ;
 
+    cout <<"*****  Initialisation   *****"<< endl;
     grid1.display();
 
-
+    cout <<"*****  fusionRight   *****"<< endl;
     grid1.fusionRight();
     grid1.display();
-
+    cout <<"*****   fusionLeft   ****"<< endl;
+    grid1.fusionLeft();
+    grid1.display();
+    cout <<"*****   fusionDown   ****"<< endl;
+    grid1.fusionDown();
+    grid1.display();
+    cout <<"******  fusionUp   *****"<< endl;
+    grid1.fusionUp();
+    grid1.display();
 
 //    int number = 2;
 //    int proba ;

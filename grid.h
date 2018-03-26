@@ -13,10 +13,15 @@ private :
     int nbCell = 4  ;
     int cellTab[4][4] ;
 
+    bool cellShiftedDown = false;
+    bool cellShiftedUp = false;
+    bool cellShiftedLeft = false;
+    bool cellShiftedRight = false;
+
 public:
     Grid();
-    void display();
     int twoOrFour();
+    void display();
     void initRandomSpot() ;
     void initValues();
 
