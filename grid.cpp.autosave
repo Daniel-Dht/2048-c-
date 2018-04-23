@@ -11,7 +11,7 @@ Grid::Grid(QObject *parent) : QObject(parent)
     this->initRandomSpot();
 }
 
-void deplacement::changement(QString vecteur){
+void Grid::changement(QString vecteur){
     if (vecteur == "new")
     {
         cout <<"tt"<<endl;;
@@ -39,6 +39,8 @@ QList<int> Grid::readGrid() {
     }
     return cellList;
 }
+
+
 
 void Grid::initValues() {
     for(int i=0; i< nbCell ; i++)

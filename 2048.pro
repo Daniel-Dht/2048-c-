@@ -1,4 +1,6 @@
-QT -= gui
+QT += quick gui
+QT += core gui
+QT += widgets
 
 CONFIG += c++11 console
 CONFIG -= app_bundle

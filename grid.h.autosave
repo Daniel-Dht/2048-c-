@@ -14,8 +14,7 @@
 class Grid : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<QString> changement_couleur READ readCouleur NOTIFY cptChanged)
-    Q_PROPERTY(QList<QString> changement_valeur READ readValeur NOTIFY cptChanged)
+    Q_PROPERTY(QList<QString> GridQML READ readGrid NOTIFY gridChanged())
 
 private :
 
@@ -32,30 +31,29 @@ private :
     void initRandomSpot() ;
 
 public:
-
-    explicit Grid(QObject *parent= nullptr);
-    Q_INVOKABLE void changement(QString vecteur);
-    QList<QString> readCouleur();
+    
     QList<int> readGrid();
     Grid( const Grid &grid );
-
+    
+    explicit Grid(QObject *parent= nullptr);
+    Q_INVOKABLE void fusionRight();
+    Q_INVOKABLE void fusionLeft(QString vecteur);
+    Q_INVOKABLE void fusionDown(QString vecteur);
+    Q_INVOKABLE void fusionUp(QString vecteur);
     void display();
     void checkDeath();
-
-    QList<int> fusionRight();
     void fusionRight(bool testDeath);
-
-    QList<int> fusionLeft();
-    void fusionLeft( bool testDeath);
-
-    QList<int> fusionUp();
-    void fusionUp(   bool testDeath);
-    void fusionDown( bool testDeath);
-
+    void fusionLeft(bool testDeath);
+    void fusionUp(bool testDeath);
+    void fusionDown(bool testDeath);
     void shiftRight();
     void shiftLeft();
     void shiftUp();
     void shiftDown();
+
+signals:
+    void gridChanged();
+    
 };
 
 #endif //
